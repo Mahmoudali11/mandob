@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:mandob/Screens/LoginPage.dart';
 import 'package:mandob/Screens/productscreen.dart';
 import 'package:mandob/Screens/workinghand.dart';
+import 'package:mandob/model/place.dart';
 import 'package:mandob/model/product.dart';
 import 'package:mandob/model/workinghand.dart';
-import 'package:mandob/provider/productprovider.dart';
+import 'package:mandob/provider/placeprovider.dart';
 import 'package:mandob/provider/uploaddata.dart';
 import 'package:mandob/provider/userprovider.dart';
 import 'package:mandob/provider/workinhandprovider.dart';
@@ -17,12 +18,13 @@ import 'package:mandob/widgets/customtextfield.dart';
 import 'package:mandob/widgets/customwidgets.dart';
 import 'package:provider/provider.dart';
 import 'package:mandob/theme/fonticon.dart';
+import 'package:mandob/Screens/placescreen.dart';
 
-class ProductScreenItme extends StatelessWidget {
+class PlaceScreenItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("hi from item ");
-    final workh = Provider.of<ProductProvider>(context);
+    final workh = Provider.of<PlacesProvider>(context);
     final userdata = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(),
@@ -47,7 +49,7 @@ Navigator.pushReplacement(context, route);
       ],),),
       body: Column(
         children: [
-                                   headerConten("Your Product")
+                                   headerConten("Your Places")
 
          ,
           Container(
@@ -78,7 +80,7 @@ Navigator.pushReplacement(context, route);
                 if (snapshot.hasData) {
                   return ListView(
                       children: snapshot.data.docs.map((e) {
-                    final wi = Product.fromJson(e);
+                    final wi = Place.fromJson(e);
                     return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -94,7 +96,7 @@ Navigator.pushReplacement(context, route);
                                 
                                 Container(
                                   child: Text(
-                                    "Product",
+                                    "Place",
                                     textAlign: TextAlign.center,
                                   ),
                                   decoration: BoxDecoration(
@@ -123,8 +125,8 @@ Navigator.pushReplacement(context, route);
                                         left: 77,
                                         child: Row(
                                           children: [
-                                            Text("Name:"),
-                                            Text(wi.name)
+                                            Text("Location:"),
+                                            Text(wi.location)
                                           ],
                                         ),
                                       ),
@@ -133,18 +135,28 @@ Navigator.pushReplacement(context, route);
                                         left: 77,
                                         child: Row(
                                           children: [
-                                            Text("Price:"),
-                                            Text(wi.price.toString())
+                                            Text("Size:"),
+                                            Text(wi.size.toString())
                                           ],
                                         ),
                                       ),
                                          Positioned(
-                                        top: 60,
+                                        top: 55,
                                         left: 77,
                                         child: Row(
                                           children: [
-                                            Text("WholeSale Price:"),
-                                            Text(wi.whprice.toString())
+                                            Text("Rent price:"),
+                                            Text(wi.rprice.toString())
+                                          ],
+                                        ),
+                                      ),
+                                       Positioned(
+                                        top: 77,
+                                        left: 77,
+                                        child: Row(
+                                          children: [
+                                            Text("Sell price:"),
+                                            Text(wi.sprice.toString())
                                           ],
                                         ),
                                       ),
@@ -163,7 +175,7 @@ Navigator.pushReplacement(context, route);
 
                     final route =MaterialPageRoute(builder: (context){
 
-                      return  ProductScreen();
+                      return  PlaceSceen();
                     });
 Navigator.push(context, route);
 
@@ -175,7 +187,7 @@ Navigator.push(context, route);
  
  
                               
- await workh.deleteProduct(wi.id);
+ await workh.deletePlace(wi.id);
   await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[0]);
     await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[1]);
   await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[2]);
@@ -204,23 +216,7 @@ Navigator.push(context, route);
           ),
         ],
       ),
-      // bottomNavigationBar:  ConvexAppBar(
-      //       items: [
-      //         TabItem(icon: Icons.notifications, title: 'Notificatio'),
-      //         TabItem(icon: Icons.home, title: 'Home'),
-      //         TabItem(icon: Icons.add, title: 'Add'),
-      //       ],
-      //       initialActiveIndex: 1, //optional, default as 0
-      //       onTap: (int i) {
-      //         var route;
-      //         if (i == 2) {
-      //           route = MaterialPageRoute(builder: (cotext) {
-      //             return ProductScreen();
-      //           });
-      //        Navigator.push(context, route);
-
-      //         }
-      //       }),
+      
     );
   }
 }

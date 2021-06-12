@@ -46,6 +46,15 @@ if(product.product!=null&&i==0){
   price.text=product.product.price.toString();
   deliverytime.text=product.product.dtime.toString();
   describtion.text=product.product.desc;
+  img1=product.product.pic[0];
+    img2=product.product.pic[1];
+        img3=product.product.pic[2];
+
+    img4=product.product.pic[3];
+        img4=product.product.pic[4];
+
+
+
 }
 i++;
 
@@ -518,7 +527,7 @@ i++;
 
                   final lstimg=[img1,img2,img3,img4,img5];
                   final p= Product(name: name.text,dtime:int.parse( deliverytime.text),whprice: double.parse(wholesomeprice.text),pic: lstimg,desc: describtion.text,price: int.parse(price.text));
-                  Provider.of<ProductProvider>(context,listen: false).addProduct(p);
+                 await Provider.of<ProductProvider>(context,listen: false).editProduct(product.product.id,p);
                  
                   skey.currentState.showSnackBar(
                       SnackBar(content: Text("data saved Successfully")));

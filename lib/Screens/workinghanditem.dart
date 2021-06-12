@@ -186,23 +186,23 @@ Navigator.push(context, route);
           ),
         ],
       ),
-      bottomNavigationBar:  ConvexAppBar(
-            items: [
-              TabItem(icon: Icons.notifications, title: 'Notificatio'),
-              TabItem(icon: Icons.home, title: 'Home'),
-              TabItem(icon: Icons.add, title: 'Add'),
-            ],
-            initialActiveIndex: 1, //optional, default as 0
-            onTap: (int i) {
-              var route;
-              if (i == 2) {
-                route = MaterialPageRoute(builder: (cotext) {
-                  return WorkingHandScreen();
-                });
-             Navigator.push(context, route);
+      // bottomNavigationBar:  ConvexAppBar(
+      //       items: [
+      //         TabItem(icon: Icons.notifications, title: 'Notificatio'),
+      //         TabItem(icon: Icons.home, title: 'Home'),
+      //         TabItem(icon: Icons.add, title: 'Add'),
+      //       ],
+      //       initialActiveIndex: 1, //optional, default as 0
+      //       onTap: (int i) {
+      //         var route;
+      //         if (i == 2) {
+      //           route = MaterialPageRoute(builder: (cotext) {
+      //             return WorkingHandScreen();
+      //           });
+      //        Navigator.push(context, route);
 
-              }
-            }),
+      //         }
+      //       }),
     );
   }
 }

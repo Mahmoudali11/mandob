@@ -1,10 +1,9 @@
 
-import 'dart:ui';
-
+ 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
-import 'package:mandob/Screens/EditProfile.dart';
+ import 'package:mandob/Screens/EditProfile.dart';
 import 'package:mandob/provider/productprovider.dart';
 import 'package:mandob/provider/uploaddata.dart';
 import 'package:mandob/provider/workinhandprovider.dart';
@@ -12,6 +11,7 @@ import 'Screens/SliderPage.dart';
 import 'package:provider/provider.dart';
 import 'provider/userprovider.dart';
 import 'theme/style.dart';
+import 'provider/placeprovider.dart';
 
 
 void main() async {
@@ -24,7 +24,9 @@ void main() async {
    ChangeNotifierProvider(create: (context)=>UserProvider()),
       ChangeNotifierProvider(create: (context)=>WorkingHandProvider()),
             ChangeNotifierProvider(create: (context)=>UploadData()),
-                        ChangeNotifierProvider(create: (context)=>ProductProvider()),
+             ChangeNotifierProvider(create: (context)=>ProductProvider()),
+                          ChangeNotifierProvider(create: (context)=>PlacesProvider()),
+
 
             
 

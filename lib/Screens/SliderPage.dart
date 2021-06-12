@@ -1,7 +1,9 @@
+ 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mandob/Screens/HomeScreen.dart';
 import 'package:mandob/Screens/ProductScreenItem.dart';
+import 'package:mandob/Screens/appnavigation.dart';
 import 'package:mandob/Screens/productscreen.dart';
 import 'package:mandob/Screens/workinghand.dart';
 import 'package:mandob/Screens/workinghanditem.dart';
@@ -21,61 +23,21 @@ class SliderPage extends StatefulWidget {
 }
 
 class _SliderPageState extends State<SliderPage> {
-  bool islogin;
+ // bool islogin;
   @override
   void initState() {
 Future.delayed(Duration(seconds: 1),()async{
   FirebaseAuth auth=FirebaseAuth.instance;
   if(auth.currentUser!=null){
 
-  
- Users users= await Provider.of<UserProvider>(context,listen: false).getUserData(auth.currentUser.uid);
- List listItem = [
-    "Broker",
-    "Finishing Worker",
-    "Hardware Supplier",
-    "Goods Supplier",
-    "Working Hand"
-  ];
 
-if(users.jobtype==listItem[3]){
-
-
-
-    print(auth.currentUser.uid);
-final route=MaterialPageRoute(builder: (context){
-  return ProductScreenItme();
-});
-
-Navigator.push(context, route);
- }
-
- else if(users.jobtype==listItem[4]){
-
-
-
-    print(auth.currentUser.uid);
-final route=MaterialPageRoute(builder: (context){
-  return WorkingHandItme();
-});
-
-Navigator.push(context, route);
- }
- else{
-
-    print(auth.currentUser.uid);
-final route=MaterialPageRoute(builder: (context){
-  return HomeScreen();
-});
-
-Navigator.push(context, route);
-
-
-
- }
-
-     
+   final route=MaterialPageRoute(builder: (context){
+     return AppNaigation();
+   });
+   Navigator.pushReplacement(context, route);
+ 
   }
+
   });
 
 

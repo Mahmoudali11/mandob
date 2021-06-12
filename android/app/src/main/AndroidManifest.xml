@@ -7,12 +7,14 @@
          FlutterApplication and put your custom class here. -->
 
     <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="mandob"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
+         <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyC3FEo_7bksnMhiBfGiZ9ruvW7c3bxRf2Y"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

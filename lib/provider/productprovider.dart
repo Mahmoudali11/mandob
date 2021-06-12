@@ -31,7 +31,7 @@ Future gotToEdit(Product w,){
 
 Future editProduct(String id,Product w) async{
 
-  await firebaseFirestore.collection("Product").doc(id).update(w.toJson());
+  await firebaseFirestore.collection("product").doc(id).update(w.toJson());
   
 
 }

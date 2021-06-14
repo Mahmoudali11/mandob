@@ -14,25 +14,44 @@ import 'package:mandob/theme/fonticon.dart';
 import 'package:provider/provider.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
-class ProductScreen extends StatelessWidget {
+
+class ProductScreen extends StatefulWidget {
+  @override
+  _ProductScreenState createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
   TextEditingController describtion = TextEditingController();
+
   TextEditingController price = TextEditingController();
+
     TextEditingController name= TextEditingController();
+
       TextEditingController deliverytime = TextEditingController();
+
       TextEditingController wholesomeprice=TextEditingController();
 
-
 final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
+
   String img1;
+
   String img2;
+
   String img3;
+
   String img4;
+
   String img5;
 
-
   final skey = GlobalKey<ScaffoldState>();
+
   int i=0;
-  
+  @override
+  void dispose() {
+    Provider.of<ProductProvider>(context,listen: false).product=null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
       
@@ -58,9 +77,7 @@ if(product.product!=null&&i==0){
 }
 i++;
 
-    // final workh1=Provider.of<WorkingHandProvider>(context);
-    // final workh2=Provider.of<WorkingHandProvider>(context,listen: false);
-
+    
     print("build working hand caled");
 
     return Scaffold(

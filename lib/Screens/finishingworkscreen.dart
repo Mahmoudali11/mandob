@@ -53,6 +53,8 @@ var nn;
   int i = 0;
 
  SingingCharacter _character = SingingCharacter.lux;
+bool isedit=false;
+     Finishing ob;
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +83,11 @@ _character = SingingCharacter.superlux;
 
       img4 = finishing.finishing.pic[3];
       img5 = finishing.finishing.pic[4];
+      isedit=true;
+      ob=finishing.finishing;
     }
     i++;
+    finishing.finishing=null;
 
  
     // final workh1=Provider.of<WorkingHandProvider>(context);
@@ -331,14 +336,14 @@ _character = SingingCharacter.superlux;
                         height: 30,
                       ),
 
-                      custmoButton(finishing.finishing==null?"Confirm":"edit", () async {
+                      custmoButton(!isedit?"Confirm":"edit", () async {
                          final lstimg = [img1, img2, img3, img4, img5];
                          final fh=Finishing(desc: describtion.text,pic: lstimg,category: category.text,worktype: _character.toString().split(".")[1],price: int.parse(price.text));
-                    if(finishing.finishing==null)
+                    if(!isedit)
                      await Provider.of<FinishingProvider>(context,listen: false).addFinishing(fh);
                      else
                      {
-                       await Provider.of<FinishingProvider>(context,listen: false).editFinishing(finishing.finishing.id,fh);
+                       await Provider.of<FinishingProvider>(context,listen: false).editFinishing(ob.id,fh);
                                   finishing.finishing=null;
 
 

@@ -52,6 +52,8 @@ var nn;
   int i = 0;
 
  SingingCharacter _character = SingingCharacter.rent;
+bool isedit=false;
+     Place ob;
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +73,11 @@ var nn;
 
       img4 = place.place.pic[3];
       img5 = place.place.pic[4];
+      isedit=true;
+      ob=place.place;
     }
     i++;
-
+ place.place=null;
     // final workh1=Provider.of<WorkingHandProvider>(context);
     // final workh2=Provider.of<WorkingHandProvider>(context,listen: false);
 
@@ -83,7 +87,7 @@ var nn;
     return Scaffold(
         key: skey,
         appBar: AppBar(),
-        body:(place.place==null)? Container(
+        body:(!isedit)? Container(
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -753,7 +757,7 @@ Navigator.push(
                         final lstimg = [img1, img2, img3, img4, img5];
                         final p = Place(desc: describtion.text,pic: lstimg,rprice: double.parse(rprice.text),sprice: double.parse(sprice.text),location: location.text,locationfrommap: locationfrommap.text,isrent:_character==SingingCharacter.rent?true:false,size: int.parse(size.text) );
                         Provider.of<PlacesProvider>(context, listen: false)
-                            .editPlace(place.place.id,p);
+                            .editPlace(ob.id,p);
 
                         skey.currentState.showSnackBar(
                             SnackBar(content: Text("data saved Successfully")));

@@ -12,15 +12,31 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:textfield_search/textfield_search.dart';
 List cat=["cars","mobiles","clothes"];
 
-class WorkingHandScreen extends StatelessWidget {
+class WorkingHandScreen extends StatefulWidget {
+  @override
+  _WorkingHandScreenState createState() => _WorkingHandScreenState();
+}
+
+class _WorkingHandScreenState extends State<WorkingHandScreen> {
   TextEditingController category = TextEditingController();
+
   TextEditingController expetedSalary = TextEditingController();
+
 final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
+
   var img1;
+
   var img2;
+
   final skey = GlobalKey<ScaffoldState>();
+
   int i=0;
-  
+  @override
+  void dispose() {
+Provider.of<WorkingHandProvider>(context,listen: false).workingHand=null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
       final workh=Provider.of<WorkingHandProvider>(context,listen: false).workingHand;

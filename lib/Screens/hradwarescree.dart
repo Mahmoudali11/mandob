@@ -57,6 +57,9 @@ var nn;
   int i = 0;
 
  SingingCharacter _character = SingingCharacter.lux;
+ bool isedit=false;
+     Hardware ob;
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,18 +80,14 @@ var nn;
 
       img4 = hardware.hardware.pic[3];
       img5 = hardware.hardware.pic[4];
+      isedit=true;
+      ob=hardware.hardware;
     }
     i++;
-   // Future.delayed(Duration(seconds: 3),(){
-         // hardware.hardware=null;
-
-  //  });
-
-    // final workh1=Provider.of<WorkingHandProvider>(context);
-    // final workh2=Provider.of<WorkingHandProvider>(context,listen: false);
-
+ 
     print("build working hand caled");
     print(_character);
+    hardware.hardware=null;
 
     return Scaffold(
         key: skey,
@@ -326,15 +325,15 @@ var nn;
                         height: 30,
                       ),
 
-                      custmoButton("Confirm", () async {
+                      custmoButton(!isedit?"confirm":"edit", () async {
                         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+itemname.text);
                          final lstimg = [img1, img2, img3, img4, img5];
                          final fh=Hardware(desc: describtion.text,pic: lstimg,category: category.text,price: int.parse(price.text),iprice: int.parse(iprice.text),itemname: itemname.text);
-                    if(hardware.hardware==null)
+                    if(!isedit)
                      await Provider.of<HardwareProvider>(context,listen: false).addHardware(fh);
                      else
                      {
-                       await Provider.of<HardwareProvider>(context,listen: false).editHardware(hardware.hardware.id,fh);
+                       await Provider.of<HardwareProvider>(context,listen: false).editHardware(ob.id,fh);
                        hardware.hardware=null;
                        
 

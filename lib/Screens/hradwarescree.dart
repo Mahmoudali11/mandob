@@ -79,10 +79,10 @@ var nn;
       img5 = hardware.hardware.pic[4];
     }
     i++;
-    Future.delayed(Duration(seconds: 3),(){
-          hardware.hardware=null;
+   // Future.delayed(Duration(seconds: 3),(){
+         // hardware.hardware=null;
 
-    });
+  //  });
 
     // final workh1=Provider.of<WorkingHandProvider>(context);
     // final workh2=Provider.of<WorkingHandProvider>(context,listen: false);
@@ -326,8 +326,7 @@ var nn;
                         height: 30,
                       ),
 
-                      custmoButton(hardware.hardware
-                      ==null?"Confirm":"edit", () async {
+                      custmoButton("Confirm", () async {
                         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+itemname.text);
                          final lstimg = [img1, img2, img3, img4, img5];
                          final fh=Hardware(desc: describtion.text,pic: lstimg,category: category.text,price: int.parse(price.text),iprice: int.parse(iprice.text),itemname: itemname.text);
@@ -336,6 +335,8 @@ var nn;
                      else
                      {
                        await Provider.of<HardwareProvider>(context,listen: false).editHardware(hardware.hardware.id,fh);
+                       hardware.hardware=null;
+                       
 
                      }
 

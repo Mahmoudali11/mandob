@@ -83,11 +83,8 @@ _character = SingingCharacter.superlux;
       img5 = finishing.finishing.pic[4];
     }
     i++;
-     Future.delayed(Duration(seconds: 3),(){
-          finishing.finishing=null;
 
-    });
-
+ 
     // final workh1=Provider.of<WorkingHandProvider>(context);
     // final workh2=Provider.of<WorkingHandProvider>(context,listen: false);
 
@@ -342,6 +339,8 @@ _character = SingingCharacter.superlux;
                      else
                      {
                        await Provider.of<FinishingProvider>(context,listen: false).editFinishing(finishing.finishing.id,fh);
+                                  finishing.finishing=null;
+
 
                      }
 

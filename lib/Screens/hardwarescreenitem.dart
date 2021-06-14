@@ -1,16 +1,18 @@
- 
- 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mandob/Screens/LoginPage.dart';
-import 'package:mandob/Screens/workinghand.dart';
-import 'package:mandob/model/workinghand.dart';
+import 'package:mandob/Screens/finishingworkscreen.dart';
+import 'package:mandob/Screens/hradwarescree.dart';
+import 'package:mandob/Screens/productscreen.dart';
+import 'package:mandob/model/finish.dart';
+import 'package:mandob/model/hardware.dart';
+import 'package:mandob/model/product.dart';
+import 'package:mandob/provider/finishingprovider.dart';
+import 'package:mandob/provider/hardwareprovider.dart';
+import 'package:mandob/provider/productprovider.dart';
 import 'package:mandob/provider/uploaddata.dart';
 import 'package:mandob/provider/userprovider.dart';
-import 'package:mandob/provider/workinhandprovider.dart';
-import 'package:mandob/widgets/customtextfield.dart';
 import 'package:mandob/widgets/customwidgets.dart';
 import 'package:provider/provider.dart';
 import 'package:mandob/theme/fonticon.dart';
@@ -18,41 +20,47 @@ import 'package:mandob/theme/fonticon.dart';
       "https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
 
 
-class WorkingHandItme extends StatelessWidget {
+class HardwareScreenItme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("hi from item ");
-    final workh = Provider.of<WorkingHandProvider>(context);
+    final workh = Provider.of<HardwareProvider>(context);
     final userdata = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(),
-      drawer: Drawer(child: Column(children: [
-        SizedBox(height: 50,),
-      GestureDetector(onTap: ()async{
-await FirebaseAuth.instance.signOut();
-final route=MaterialPageRoute(builder: (context){
-  return LoginPage();
-});
-Navigator.pushReplacement(context, route);
-
-      },
-              child: Row(children: [
-
-        Icon(Icons.exit_to_app,color: Colors.red,),Text("logout")
-
-
-        ],),
-      )
-
-      ],),),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            GestureDetector(
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                final route = MaterialPageRoute(builder: (context) {
+                  return LoginPage();
+                });
+                Navigator.pushReplacement(context, route);
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.exit_to_app,
+                    color: Colors.red,
+                  ),
+                  Text("logout")
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
       body: Column(
         children: [
-                                   headerConten("Your Resumee")
-
-         ,
+          headerConten("Your Hardware"),
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height*0.7,
+            height: MediaQuery.of(context).size.height * 0.7,
             child: StreamBuilder<QuerySnapshot>(
               stream: workh.getItem(),
               builder: (context, snapshot) {
@@ -78,7 +86,7 @@ Navigator.pushReplacement(context, route);
                 if (snapshot.hasData) {
                   return ListView(
                       children: snapshot.data.docs.map((e) {
-                    final wi = WorkingHand.fromJson(e);
+                    final wi = Hardware.fromJson(e);
                     return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -91,10 +99,9 @@ Navigator.pushReplacement(context, route);
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                
                                 Container(
                                   child: Text(
-                                    "your Resumee",
+                                    "Hardware",
                                     textAlign: TextAlign.center,
                                   ),
                                   decoration: BoxDecoration(
@@ -113,7 +120,7 @@ Navigator.pushReplacement(context, route);
                                           top: 5,
                                           left: 5,
                                           child: Image.network(
-                                            wi.pic??imgurl,
+                                            getAv(wi.pic),
                                             fit: BoxFit.fill,
                                             width: 70,
                                             height: 70,
@@ -123,8 +130,8 @@ Navigator.pushReplacement(context, route);
                                         left: 77,
                                         child: Row(
                                           children: [
-                                            Text("Name:"),
-                                            Text(userdata.userprofile.name)
+                                            Text("Item name:"),
+                                            Text(wi.itemname)
                                           ],
                                         ),
                                       ),
@@ -133,8 +140,18 @@ Navigator.pushReplacement(context, route);
                                         left: 77,
                                         child: Row(
                                           children: [
-                                            Text("Salary:"),
-                                            Text(wi.salary.toString())
+                                            Text("Unit Price:"),
+                                            Text(wi.price.toString())
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 55,
+                                        left: 77,
+                                        child: Row(
+                                          children: [
+                                            Text("Installation Price:"),
+                                            Text(wi.iprice.toString())
                                           ],
                                         ),
                                       ),
@@ -142,38 +159,50 @@ Navigator.pushReplacement(context, route);
                                         right: 5,
                                         child: Column(
                                           children: [
-                                            custmoButton("Details", (){}, context, 80, 30)
-                                            ,  SizedBox(height: 3,),
+                                            custmoButton("Details", () {},
+                                                context, 80, 30),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            custmoButton("Edit", () async {
+                                              await workh.gotToEdit(wi);
 
-                                            
-                                            custmoButton(
-                                                "Edit", () async{
+                                              final route = MaterialPageRoute(
+                                                  builder: (context) {
+                                                return HardwareSceen();
+                                              });
+                                              Navigator.push(context, route);
+                                            }, context, 70, 30),
+                                            SizedBox(
+                                              height: 3,
+                                            ),
+                                            custmoButton("Delete", () async {
+                                              print("delete btn pressed");
 
-                                                  await workh.gotToEdit(wi);
+                                              await workh.deleteHardware(wi.id);
+                                              await Provider.of<UploadData>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteImg(wi.pic[0]);
+                                              await Provider.of<UploadData>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteImg(wi.pic[1]);
+                                              await Provider.of<UploadData>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteImg(wi.pic[2]);
+                                              await Provider.of<UploadData>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteImg(wi.pic[3]);
+                                              await Provider.of<UploadData>(
+                                                      context,
+                                                      listen: false)
+                                                  .deleteImg(wi.pic[4]);
 
-                    final route =MaterialPageRoute(builder: (context){
-
-                      return  WorkingHandScreen();
-                    });
-Navigator.push(context, route);
-
-                                                }, context, 70, 30),
-                                                SizedBox(height: 3,),
-                                                  custmoButton(
-                                                "Delete", () async{
- 
- 
-                              
- await workh.deleteResumee(wi.id);
-  await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic);
-    await Provider.of<UploadData>(context,listen: false).deleteImg(wi.cv);
-
-  print("delted");
-  
-
-
-                                                }, context, 80, 30),
-                                                
+                                              print("delted");
+                                            }, context, 80, 30),
                                           ],
                                         ),
                                       )
@@ -200,7 +229,7 @@ Navigator.push(context, route);
       //         var route;
       //         if (i == 2) {
       //           route = MaterialPageRoute(builder: (cotext) {
-      //             return WorkingHandScreen();
+      //             return HardwareScreen();
       //           });
       //        Navigator.push(context, route);
 
@@ -208,6 +237,7 @@ Navigator.push(context, route);
       //       }),
     );
   }
+
   String getAv(List nn){
 
   for (var n in nn){
@@ -223,5 +253,4 @@ Navigator.push(context, route);
    return imgurl;
 
   }
-
 }

@@ -292,6 +292,8 @@ i++;
                   skey.currentState.showSnackBar(
                       SnackBar(content: Text("data saved Successfully")));
                 }, context,null,null),
+                                SizedBox(height: 50,)
+
               ],
             ),
           ),
@@ -532,6 +534,8 @@ i++;
                   skey.currentState.showSnackBar(
                       SnackBar(content: Text("data saved Successfully")));
                 }, context,null,null),
+                                SizedBox(height: 50,)
+
               ],
             ),
           ),

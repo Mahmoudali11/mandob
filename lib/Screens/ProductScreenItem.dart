@@ -17,6 +17,9 @@ import 'package:mandob/widgets/customtextfield.dart';
 import 'package:mandob/widgets/customwidgets.dart';
 import 'package:provider/provider.dart';
 import 'package:mandob/theme/fonticon.dart';
+ final imgurl =
+      "https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
+
 
 class ProductScreenItme extends StatelessWidget {
   @override
@@ -113,7 +116,7 @@ Navigator.pushReplacement(context, route);
                                           top: 5,
                                           left: 5,
                                           child: Image.network(
-                                            wi.pic[0],
+                                            getAv(wi.pic),
                                             fit: BoxFit.fill,
                                             width: 70,
                                             height: 70,
@@ -223,4 +226,20 @@ Navigator.push(context, route);
       //       }),
     );
   }
+  String getAv(List nn){
+
+  for (var n in nn){
+    if(n!=null){
+      return n;
+    }
+    
+
+
+
+  }
+
+   return imgurl;
+
+  }
+
 }

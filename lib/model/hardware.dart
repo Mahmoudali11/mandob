@@ -7,24 +7,23 @@ int price;
 List<dynamic>pic;
 String desc;
 String id;
-String name;
-int uprice;
-String category;
+  String category;
+ String itemname;
+ int iprice;
 
-Hardware({this.name,this.pic,this.price,this.category,this.desc,this.uprice});
+Hardware({this.pic,this.price,this.category,this.desc,this.itemname,this.iprice});
 Hardware.fromJson(DocumentSnapshot json){
   price=json["price"];
   pic=json["pic"];
-  uprice=json["uprice"];
-  name=json["name"];
-  desc=json["desc"];
- 
+   desc=json["desc"];
+  itemname=json["itemname"];
   id=json.id;
+  iprice=json["iprice"];
 
 }
 Map<String,dynamic> toJson(){
 
-//return {"price":price,"pic":pic,"name":name,"whprice":whprice,"dtime":dtime,"desc":desc};
+return {"price":price,"pic":pic,"itemname":itemname,"categorty":category,"desc":desc,"iprice":iprice};
 
 }
 

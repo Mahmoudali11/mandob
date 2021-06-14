@@ -5,6 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mandob/Screens/ProductScreenItem.dart';
 import 'package:mandob/Screens/SliderPage.dart';
+import 'package:mandob/Screens/finishingscreenitem.dart';
+import 'package:mandob/Screens/finishingworkscreen.dart';
+import 'package:mandob/Screens/hardwarescreenitem.dart';
+import 'package:mandob/Screens/hradwarescree.dart';
 import 'package:mandob/Screens/placescreenitem.dart';
 import 'package:mandob/Screens/productscreen.dart';
 import 'package:mandob/Screens/workinghand.dart';
@@ -72,9 +76,17 @@ if(users.jobtype==listItem[3]){
 
  _list=[Center(child: Text("Notifications")),WorkingHandItme(),WorkingHandScreen(),];
  }
+ else if(users.jobtype==listItem[2]){
+
+ _list=[Center(child: Text("Notifications")),HardwareScreenItme(),HardwareSceen(),];
+ }
  else if(users.jobtype==listItem[0]){
 
  _list=[Center(child: Text("Notifications")),PlaceScreenItem(),PlaceSceen()];
+ }
+ else if(users.jobtype==listItem[1]){
+
+ _list=[Center(child: Text("Notifications")),FinishingScreenItme(),FinishingSceen()];
  }
  else{
  _list=[Center(child: Text("Notifications")),HomeScreen()];

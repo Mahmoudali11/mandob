@@ -9,9 +9,11 @@ import 'package:mandob/widgets/customtextfield.dart';
 import 'package:mandob/theme/fonticon.dart';
 import 'package:provider/provider.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:textfield_search/textfield_search.dart';
+List cat=["cars","mobiles","clothes"];
 
 class WorkingHandScreen extends StatelessWidget {
-  TextEditingController worktype = TextEditingController();
+  TextEditingController category = TextEditingController();
   TextEditingController expetedSalary = TextEditingController();
 final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
   var img1;
@@ -26,7 +28,7 @@ final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.j
       if(i==0&&workh!=null){
 
         print("caled");
-  worktype.text=workh.work;
+ category.text=workh.work;
           expetedSalary.text=workh.salary.toString();
       }
       i++;
@@ -91,21 +93,29 @@ final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.j
                     );
                   }),
                 ),
-                Text(
-                  "preferable Working field",
-                  style: textstyle2,
-                  textAlign: TextAlign.center,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 50, right: 50, top: 30, bottom: 33),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: headercolor,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: CustomeFormField(worktype, false, "required", '',
-                          Icons.search, TextInputType.text, () {})),
-                ),
+                  Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Category",
+                              style: textstyle2,
+                              textAlign: TextAlign.center,
+                            ),
+                            Spacer(),
+                            Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                decoration: BoxDecoration(
+                                    color: headercolor,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: TextFieldSearch(label: category.text, controller: category,initialList: cat,)),
+
+                                  
+
+                          ],
+                        ),
+                      ) ,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -137,13 +147,16 @@ final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.j
                       .addHandWork(WorkingHand(
                           pic: img1,
                           cv: img2,
-                          work: worktype.text,
+                          work: category.text,
                           salary: int.parse(expetedSalary.text)));
 
                   skey.currentState.showSnackBar(
                       SnackBar(content: Text("data saved Successfully")));
                 }, context,null,null),
+                                SizedBox(height: 50,)
+
               ],
+              
             ),
           ),
         ):Container(
@@ -199,21 +212,29 @@ final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.j
                     );
                   }),
                 ),
-                Text(
-                  "preferable Working field",
-                  style: textstyle2,
-                  textAlign: TextAlign.center,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 50, right: 50, top: 30, bottom: 33),
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: headercolor,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: CustomeFormField(worktype, false, "required", '',
-                          Icons.search, TextInputType.text, () {})),
-                ),
+               Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Category",
+                              style: textstyle2,
+                              textAlign: TextAlign.center,
+                            ),
+                            Spacer(),
+                            Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                decoration: BoxDecoration(
+                                    color: headercolor,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: TextFieldSearch(label: category.text, controller: category,initialList: cat,)),
+
+                                  
+
+                          ],
+                        ),
+                      ) ,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -246,14 +267,16 @@ final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.j
                       .editResumee(workh.id,WorkingHand(
                           pic: img1??workh.pic,
                           cv: img2??workh.cv,
-                          work: worktype.text,
+                          work: category.text,
                           salary: int.parse(expetedSalary.text)));
 
    await Provider.of<WorkingHandProvider>(context,listen: false).gotToEdit(null);
                   skey.currentState.showSnackBar(
                       SnackBar(content: Text("data saved Successfully")));
                 }, context,null,null),
+                SizedBox(height: 50,)
               ],
+              
             ),
           ),
         ),

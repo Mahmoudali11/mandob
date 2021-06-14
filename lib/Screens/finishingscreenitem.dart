@@ -1,16 +1,17 @@
  
  
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mandob/Screens/LoginPage.dart';
-import 'package:mandob/Screens/workinghand.dart';
-import 'package:mandob/model/workinghand.dart';
+import 'package:mandob/Screens/finishingworkscreen.dart';
+import 'package:mandob/Screens/productscreen.dart';
+import 'package:mandob/model/finish.dart';
+import 'package:mandob/model/product.dart';
+import 'package:mandob/provider/finishingprovider.dart';
+import 'package:mandob/provider/productprovider.dart';
 import 'package:mandob/provider/uploaddata.dart';
 import 'package:mandob/provider/userprovider.dart';
-import 'package:mandob/provider/workinhandprovider.dart';
-import 'package:mandob/widgets/customtextfield.dart';
 import 'package:mandob/widgets/customwidgets.dart';
 import 'package:provider/provider.dart';
 import 'package:mandob/theme/fonticon.dart';
@@ -18,11 +19,11 @@ import 'package:mandob/theme/fonticon.dart';
       "https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
 
 
-class WorkingHandItme extends StatelessWidget {
+class FinishingScreenItme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("hi from item ");
-    final workh = Provider.of<WorkingHandProvider>(context);
+    final workh = Provider.of<FinishingProvider>(context);
     final userdata = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(),
@@ -47,7 +48,7 @@ Navigator.pushReplacement(context, route);
       ],),),
       body: Column(
         children: [
-                                   headerConten("Your Resumee")
+                                   headerConten("Your Finishing")
 
          ,
           Container(
@@ -78,7 +79,7 @@ Navigator.pushReplacement(context, route);
                 if (snapshot.hasData) {
                   return ListView(
                       children: snapshot.data.docs.map((e) {
-                    final wi = WorkingHand.fromJson(e);
+                    final wi = Finishing.fromJson(e);
                     return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -94,7 +95,7 @@ Navigator.pushReplacement(context, route);
                                 
                                 Container(
                                   child: Text(
-                                    "your Resumee",
+                                    "Finishing",
                                     textAlign: TextAlign.center,
                                   ),
                                   decoration: BoxDecoration(
@@ -113,7 +114,8 @@ Navigator.pushReplacement(context, route);
                                           top: 5,
                                           left: 5,
                                           child: Image.network(
-                                            wi.pic??imgurl,
+                                                                                       getAv(wi.pic),
+
                                             fit: BoxFit.fill,
                                             width: 70,
                                             height: 70,
@@ -123,8 +125,8 @@ Navigator.pushReplacement(context, route);
                                         left: 77,
                                         child: Row(
                                           children: [
-                                            Text("Name:"),
-                                            Text(userdata.userprofile.name)
+                                            Text("Finishing Type:"),
+                                            Text(wi.worktype)
                                           ],
                                         ),
                                       ),
@@ -133,11 +135,12 @@ Navigator.pushReplacement(context, route);
                                         left: 77,
                                         child: Row(
                                           children: [
-                                            Text("Salary:"),
-                                            Text(wi.salary.toString())
+                                            Text("Price:"),
+                                            Text(wi.price.toString())
                                           ],
                                         ),
                                       ),
+                                        
                                       Positioned(
                                         right: 5,
                                         child: Column(
@@ -153,7 +156,7 @@ Navigator.pushReplacement(context, route);
 
                     final route =MaterialPageRoute(builder: (context){
 
-                      return  WorkingHandScreen();
+                      return  FinishingSceen();
                     });
 Navigator.push(context, route);
 
@@ -161,13 +164,18 @@ Navigator.push(context, route);
                                                 SizedBox(height: 3,),
                                                   custmoButton(
                                                 "Delete", () async{
+                                                  print("delete btn pressed");
  
  
                               
- await workh.deleteResumee(wi.id);
-  await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic);
-    await Provider.of<UploadData>(context,listen: false).deleteImg(wi.cv);
+ await workh.deleteFinishing(wi.id);
+  await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[0]);
+    await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[1]);
+  await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[2]);
+  await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[3]);
+  await Provider.of<UploadData>(context,listen: false).deleteImg(wi.pic[4]);
 
+ 
   print("delted");
   
 
@@ -200,7 +208,7 @@ Navigator.push(context, route);
       //         var route;
       //         if (i == 2) {
       //           route = MaterialPageRoute(builder: (cotext) {
-      //             return WorkingHandScreen();
+      //             return FinishingScreen();
       //           });
       //        Navigator.push(context, route);
 

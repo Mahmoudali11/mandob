@@ -6,11 +6,14 @@ import 'package:mandob/model/workinghand.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-class WorkingHandProvider extends ChangeNotifier{
+
+import 'package:provider/provider.dart';
+class WorkingHandProvider extends ChangeNotifier {
 WorkingHand workingHand;
+
 File img;
 String imgname;
-
+ 
 
 FirebaseFirestore firebaseFirestore=FirebaseFirestore.instance;
 Future deleteResumee(String w)async{

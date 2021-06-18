@@ -1,439 +1,509 @@
 import 'package:flutter/material.dart';
+import 'package:mandob/model/finish.dart';
+import 'package:mandob/model/hardware.dart';
+import 'package:mandob/model/place.dart';
+import 'package:mandob/model/product.dart';
+import 'package:mandob/widgets/mandoblogo_icons.dart';
+import '../provider/placeprovider.dart';
+import 'package:provider/provider.dart';
+import '../provider/userprovider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'LoginPage.dart';
+import '../provider/finishingprovider.dart';
+import '../provider/hardwareprovider.dart';
+import '../provider/productprovider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key key}) : super(key: key);
+final imgurl =
+    "https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
 
+class UserHomePage extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _UserHomePageState createState() => _UserHomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+//
+class _UserHomePageState extends State<UserHomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-    var _imageFile;
+    final placesfitcher = Provider.of<PlacesProvider>(context);
+    final finishingfitcher = Provider.of<FinishingProvider>(context);
+    final hardwarefitcher = Provider.of<HardwareProvider>(context);
+    final productsfitcher = Provider.of<ProductProvider>(context);
+
     return Scaffold(
-      backgroundColor: Colors.blue,
-      drawer: Drawer(
-
-        child: Column(
-          children: [GestureDetector(
-                      child: Row(children: [
-               Icon(Icons.exit_to_app)
-               ,
-              Text("LogOut")
-
-            ],),
-          )],
-        ),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Colors.white38.withOpacity(0.2),
-            Colors.white30.withOpacity(0.6)
-          ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
-          //     image: DecorationImage(
-          //   image: _imageFile == null
-          //       ? AssetImage('lib/Images/Customer2.png')
-          //       : FileImage(_imageFile),
-          //   fit: BoxFit.cover,
-          // )
-        ),
-        height: double.infinity,
-        child: SingleChildScrollView(
+        key: _scaffoldKey,
+        backgroundColor: Color.fromRGBO(244, 243, 243, 1),
+        drawer: Drawer(
           child: Column(
             children: [
-              SizedBox(width: 20),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              SizedBox(
+                height: 50,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  final route = MaterialPageRoute(builder: (context) {
+                    return LoginPage();
+                  });
+                  Navigator.pushReplacement(context, route);
+                },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: 250,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.white54,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: TextField(
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          hintText: "Search Here",
-                          prefixIcon: Icon(Icons.search),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 7,
+                    Icon(
+                      Icons.exit_to_app,
+                      color: Colors.red,
+                    ),
+                    Text("logout")
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        appBar: AppBar(
+          actions: [
+            RaisedButton(
+              focusColor: Colors.yellow[400],
+              color: Colors.blue[400],
+              elevation: 10,
+              onPressed: () {
+                print("Mandob Logo Clicked");
+              },
+              child: Icon(Mandoblogo.mandoblogo),
+            ),
+          ],
+          backgroundColor: Colors.blue[400],
+          brightness: Brightness.light,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.menu,
+              color: Colors.black87,
+            ),
+            onPressed: () {
+              _scaffoldKey.currentState.openDrawer();
+            },
+          ),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.vertical(bottom: Radius.circular(30))),
+                    padding: EdgeInsets.all(20.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Easier Life',
+                            style:
+                                TextStyle(color: Colors.black87, fontSize: 25),
                           ),
-                        ),
-                      ),
-                    ),
-                    IconBillWithCounter(
-                      photo: 'lib/Images/add-to-cart.png',
-                      press: () => print("Add To Cart Button"),
-                    ),
-                    IconBillWithCounter(
-                      photo: 'lib/Images/bell.png',
-                      numOfItems: 3,
-                      press: () => print("Notification Button"),
-                    ),
-                  ],
-                ),
-              ),
-              // Container(
-              //     margin: EdgeInsets.symmetric(
-              //       horizontal: 20,
-              //     ),
-              //     width: double.infinity,
-              //     height: 110,
-              //     decoration: BoxDecoration(
-              //         borderRadius: BorderRadius.circular(20),
-              //         image: DecorationImage(
-              //           image: _imageFile == null
-              //               ? AssetImage('lib/Images/hot_deals.png')
-              //               : FileImage(_imageFile),
-              //           fit: BoxFit.fill,
-              //         ))),
-              // SizedBox(
-              //   height: 30,
-              // ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Special for you",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          print("See More Special");
-                        },
-                        child: Text("See More")),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    SpecialOfferCard(
-                      image:
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd2gjgc_Sr8CjjBbHmyHAU8HrDcfVrqC_XdQ&usqp=CAU",
-                      category: "Smart Phones",
-                      numOfBrand: 18,
-                      press: () {},
-                    ),
-                    SpecialOfferCard(
-                      image:
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgHSpexdLQk8aa_j_UDj-X4xrQyY1PcfB4-UY8qAZKxBIttUHKt4LrfFfhdfs5zz2n0lM&usqp=CAU",
-                      category: "Cars",
-                      numOfBrand: 22,
-                      press: () {},
-                    ),
-                    SpecialOfferCard(
-                      image:
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_LvdysRH4dGM_xIUuxmQhGcz5c84O0FR7jg&usqp=CAU",
-                      category: "Clothes",
-                      numOfBrand: 10,
-                      press: () {},
-                    ),
-                    SizedBox(
-                      width: 20,
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Popular",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          print("See More Popular");
-                        },
-                        child: Text("See More")),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Popular(
-                      imageFile: _imageFile,
-                      image: Image.asset(
-                        'lib/Images/car-oil.png',
-                        fit: BoxFit.contain,
-                      ),
-                      title: "Total Oil",
-                      price: "  10\$",
-                    ),
-                    Popular(
-                      imageFile: _imageFile,
-                      image: Image.asset(
-                        'lib/Images/mobile cover.jpg',
-                        fit: BoxFit.contain,
-                      ),
-                      title: "Mobile Cover",
-                      price: "  8\$",
-                    ),
-                    Popular(
-                      imageFile: _imageFile,
-                      image: Image.asset(
-                        'lib/Images/apartment.jpg',
-                        fit: BoxFit.fill,
-                      ),
-                      title: "Apartment For Sale",
-                      price: "  1000\$",
-                    ),
-                  ],
-                ),
-              )
-            ],
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'With Mandob',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(right: 15.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image:
+                                          AssetImage("lib/Images/car-oil.png")),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(244, 243, 243, 1),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: Colors.black87,
+                                  ),
+                                  hintText: "Searching for something ?",
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey, fontSize: 15)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Popular Places',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+
+//start of spawning Scroll View
+
+                          Container(
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: placesfitcher.getItem(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    print("Error Getting Places");
+                                    return Text(
+                                      'Something went wrong',
+                                    );
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  if (snapshot.hasData &&
+                                      snapshot.data.docs.length <= 0) {
+                                    print("Data Found but no data there");
+                                    return Center(
+                                      child: Text(
+                                        "no items",
+                                      ),
+                                    );
+                                  }
+
+                                  if (snapshot.hasData) {
+                                    print("Data found and will be viewed Now");
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 200,
+                                      child: ListView(
+                                          scrollDirection: Axis.horizontal,
+                                          children: snapshot.data.docs.map((e) {
+                                            final placesextracted =
+                                                Place.fromJson(e);
+                                            return promoCard(
+                                                getAv(placesextracted.pic),
+                                                placesextracted.location);
+                                          }).toList()),
+                                    );
+                                  }
+                                }),
+                          ),
+
+//End of spawning Scroll View
+
+                          SizedBox(
+                            height: 15,
+                          ),
+
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Popular Finishing Work',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+
+//Start of Finishing Scroll View
+
+                          Container(
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: finishingfitcher.getItem(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    print("Error Getting Places");
+                                    return Text(
+                                      'Something went wrong',
+                                    );
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  if (snapshot.hasData &&
+                                      snapshot.data.docs.length <= 0) {
+                                    print("Data Found but no data there");
+                                    return Center(
+                                      child: Text(
+                                        "no items",
+                                      ),
+                                    );
+                                  }
+
+                                  if (snapshot.hasData) {
+                                    print("Data found and will be viewed Now");
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 200,
+                                      child: ListView(
+                                          scrollDirection: Axis.horizontal,
+                                          children: snapshot.data.docs.map((s) {
+                                            final finishingextracted =
+                                                Finishing.fromJson(s);
+                                            return promoCard(
+                                                getAv(finishingextracted.pic),
+                                                finishingextracted.worktype);
+                                          }).toList()),
+                                    );
+                                  }
+                                }),
+                          ),
+
+// separator
+
+                          SizedBox(
+                            height: 15,
+                          ),
+
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Popular Hardware Suppliers',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+
+// separator
+
+//Start of Hardware Scroll View
+
+                          Container(
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: hardwarefitcher.getItem(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    print("Error Getting Places");
+                                    return Text(
+                                      'Something went wrong',
+                                    );
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  if (snapshot.hasData &&
+                                      snapshot.data.docs.length <= 0) {
+                                    print("Data Found but no data there");
+                                    return Center(
+                                      child: Text(
+                                        "no items",
+                                      ),
+                                    );
+                                  }
+
+                                  if (snapshot.hasData) {
+                                    print("Data found and will be viewed Now");
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 200,
+                                      child: ListView(
+                                          scrollDirection: Axis.horizontal,
+                                          children: snapshot.data.docs.map((s) {
+                                            final hardwareextracted =
+                                                Hardware.fromJson(s);
+                                            return promoCard(
+                                                getAv(hardwareextracted.pic),
+                                                hardwareextracted.itemname);
+                                          }).toList()),
+                                    );
+                                  }
+                                }),
+                          ),
+
+// separator
+
+                          SizedBox(
+                            height: 15,
+                          ),
+
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Popular Products Suppliers',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+
+// separator
+
+//start of product
+
+                          Container(
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: productsfitcher.getItem(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    print("Error Getting Places");
+                                    return Text(
+                                      'Something went wrong',
+                                    );
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  if (snapshot.hasData &&
+                                      snapshot.data.docs.length <= 0) {
+                                    print("Data Found but no data there");
+                                    return Center(
+                                      child: Text(
+                                        "no items",
+                                      ),
+                                    );
+                                  }
+
+                                  if (snapshot.hasData) {
+                                    print("Data found and will be viewed Now");
+                                    return Container(
+                                      width: double.infinity,
+                                      height: 200,
+                                      child: ListView(
+                                          scrollDirection: Axis.horizontal,
+                                          children: snapshot.data.docs.map((s) {
+                                            final productsextracted =
+                                                Product.fromJson(s);
+                                            return promoCard(
+                                                getAv(productsextracted.pic),
+                                                productsextracted.name);
+                                          }).toList()),
+                                    );
+                                  }
+                                }),
+                          ),
+                        ])),
+              ],
+            ),
+          ),
+        ));
+  }
+
+//Start of PromoCard
+  Widget promoCard(image, String displayinfo) {
+    return AspectRatio(
+      aspectRatio: 2.62 / 3,
+      child: Stack(children: [
+        Container(
+          margin: EdgeInsets.only(right: 15.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image:
+                DecorationImage(fit: BoxFit.cover, image: NetworkImage(image)),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(begin: Alignment.bottomRight, stops: [
+                  0.1,
+                  0.9
+                ], colors: [
+                  Colors.black.withOpacity(.8),
+                  Colors.black.withOpacity(.1)
+                ])),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class Popular extends StatelessWidget {
-  const Popular({
-    Key key,
-    @required imageFile,
-    this.width = 140,
-    this.aspectRatio = 1.02,
-    this.product,
-    this.image,
-    this.title,
-    this.price,
-  })  : _imageFile = imageFile,
-        super(key: key);
-
-  final _imageFile;
-  final double width, aspectRatio;
-  final product;
-  final image;
-  final String title;
-  final String price;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: SizedBox(
-          width: width,
-          child: Column(
-            children: [
-              AspectRatio(
-                aspectRatio: aspectRatio,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white54.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-
-                    // image: DecorationImage(
-                    //   image:
-                    //   _imageFile == null
-                    //       ? AssetImage('lib/Images/car-oil.png')
-                    //       : FileImage(_imageFile),
-                    //   fit: BoxFit.cover,
-                    // )
-                  ),
-                  child: image,
-                ),
+        Positioned(
+          right: 2,
+          bottom: -2,
+          child: FloatingActionButton(
+              child: Text(
+                "View",
+                style: TextStyle(color: Colors.black),
               ),
-              SizedBox(
-                height: 10,
+              backgroundColor: Colors.blue[100],
+              onPressed: () {
+                print("i was pressed");
+              }),
+        ),
+        Positioned(
+          child: Container(
+            padding: EdgeInsets.all(7),
+            color: Colors.blue[100],
+            child: Text(
+              displayinfo,
+              style: TextStyle(
+                fontSize: 25,
               ),
-              Text(
-                "$title",
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "$price",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.deepOrange,
-                    ),
-                  ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      print("Love Button");
-                    },
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        color: Colors.white38.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.network(
-                          "https://cdn0.iconfinder.com/data/icons/housing-interface-1/16/Heart-512.png"),
-                    ),
-                  )
-                ],
-              )
-            ],
-          )),
-    );
-  }
-}
-
-class SpecialOfferCard extends StatelessWidget {
-  const SpecialOfferCard({
-    Key key,
-    @required this.category,
-    @required this.image,
-    @required this.numOfBrand,
-    @required this.press,
-  }) : super(key: key);
-
-  final String category;
-  final image;
-  final int numOfBrand;
-  final GestureTapCallback press;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20),
-      child: SizedBox(
-        width: 200,
-        height: 100,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Stack(children: [
-              Image.network(image),
-              Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                      Color(0xFF343434).withOpacity(0.4),
-                      Color(0xFF343434).withOpacity(0.15)
-                    ])),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 10,
-                ),
-                child: Text.rich(TextSpan(
-                  style: TextStyle(color: Colors.white),
-                  children: [
-                    TextSpan(
-                      text: "$category\n",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'opensans',
-                      ),
-                    ),
-                    TextSpan(
-                      text: "$numOfBrand Brands",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'opensans',
-                      ),
-                    ),
-                  ],
-                )),
-              )
-            ])),
-      ),
-    );
-  }
-}
-
-class IconBillWithCounter extends StatelessWidget {
-  IconBillWithCounter({
-    Key key,
-    @required this.photo,
-    this.numOfItems = 0,
-    @required this.press,
-  }) : super(key: key);
-
-  var _imageFile;
-  final String photo;
-  final int numOfItems;
-  final GestureTapCallback press;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: press,
-      borderRadius: BorderRadius.circular(50),
-      child: Stack(
-        overflow: Overflow.visible,
-        children: [
-          Container(
-            padding: EdgeInsets.all(12),
-            height: 46,
-            width: 46,
-            decoration: BoxDecoration(
-                color: Colors.white54,
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: _imageFile == null
-                      ? AssetImage(photo)
-                      : FileImage(_imageFile),
-                  fit: BoxFit.cover,
-                )),
+            ),
           ),
-          if (numOfItems != 0)
-            Positioned(
-              top: -3,
-              right: 0,
-              child: Container(
-                height: 16,
-                width: 16,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 1.5, color: Colors.white),
-                ),
-                child: Center(
-                  child: Text(
-                    "$numOfItems",
-                    style: TextStyle(
-                      fontSize: 10,
-                      height: 1,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            )
-        ],
-      ),
+        )
+      ]),
     );
+  } //End of PromoCard
+
+  String getAv(List nn) {
+    for (var n in nn) {
+      if (n != null) {
+        return n;
+      }
+    }
+
+    return imgurl;
   }
 }

@@ -27,7 +27,8 @@ class _SignupPageState extends State<SignupPage> {
     "Finishing Worker",
     "Hardware Supplier",
     "Goods Supplier",
-    "Working Hand"
+    "Working Hand",
+    "Regular User",
   ];
   final auth = FirebaseAuth.instance;
 
@@ -78,12 +79,20 @@ class _SignupPageState extends State<SignupPage> {
     final ref = referenceData.reference();
 
     try {
-   final user=  await auth.createUserWithEmailAndPassword(email: _email, password: _password).then((value)async{
-     print("sucessful");
+      final user = await auth
+          .createUserWithEmailAndPassword(email: _email, password: _password)
+          .then((value) async {
+        print("sucessful");
 
-      await Provider.of<UserProvider>(context,listen: false).saveUserData(Users(uid:value.user.uid,jobtype:_authData["identity"],email: _authData["email"],name: _authData["name"],username: _authData["username"],phone: _authData["phone_number"]));
-
-   });
+        await Provider.of<UserProvider>(context, listen: false).saveUserData(
+            Users(
+                uid: value.user.uid,
+                jobtype: _authData["identity"],
+                email: _authData["email"],
+                name: _authData["name"],
+                username: _authData["username"],
+                phone: _authData["phone_number"]));
+      });
       var doneMessage = 'Signup Success. you can Login now.';
       _showDoneDialog(doneMessage);
       // ref.child('Users').push().child('Name').set(_authData['name']).asStream();

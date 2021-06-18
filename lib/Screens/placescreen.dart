@@ -1,4 +1,5 @@
  
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mandob/model/place.dart';
@@ -415,7 +416,7 @@ Navigator.push(
                         print(rprice.text);
                         final lstimg = [img1, img2, img3, img4, img5];
                        
-                        final p = Place(desc: describtion.text,pic: lstimg,rprice: double.parse(rprice.text),sprice: double.parse(sprice.text),location: location.text,locationfrommap: locationfrommap.text,isrent:_character==SingingCharacter.rent?true:false,size: int.parse(size.text) );
+                        final p = Place(uid: FirebaseAuth.instance.currentUser.uid,desc: describtion.text,pic: lstimg,rprice: double.parse(rprice.text),sprice: double.parse(sprice.text),location: location.text,locationfrommap: locationfrommap.text,isrent:_character==SingingCharacter.rent?true:false,size: int.parse(size.text) );
                        if(!isedit)
                         Provider.of<PlacesProvider>(context, listen: false)
                             .addPlace(p);

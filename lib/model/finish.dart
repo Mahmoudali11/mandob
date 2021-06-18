@@ -9,8 +9,9 @@ class Finishing {
   String id;
   String worktype;
   String category;
+  String uid;
 
-  Finishing({this.pic, this.price, this.category, this.desc, this.worktype});
+  Finishing({this.pic, this.price, this.category, this.desc, this.worktype,this.uid});
   Finishing.fromJson(DocumentSnapshot json) {
     price = json["price"];
     pic = json["pic"];
@@ -18,6 +19,7 @@ class Finishing {
     worktype = json["worktype"];
     id = json.id;
     category=json["categorty"];
+    uid=json["uid"];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,7 +28,8 @@ class Finishing {
       "pic": pic,
       "worktype": worktype,
       "categorty": category,
-      "desc": desc
+      "desc": desc,
+      "uid":uid
     };
   }
 }

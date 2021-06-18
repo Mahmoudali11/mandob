@@ -38,8 +38,8 @@ Future addHardware(Hardware p)async{
  
 
 }
-Stream getItem(){
-return  firebaseFirestore.collection("Hardware").snapshots();
+Stream getItem(String uid){
+return  firebaseFirestore.collection("Hardware").where("uid",isEqualTo:uid ).snapshots();
 
 }
 

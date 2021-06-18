@@ -10,6 +10,8 @@ class Place {
   String location;
   String locationfrommap;
   bool isrent;
+    String uid;
+
 
   Place(
       {this.pic,
@@ -19,7 +21,7 @@ class Place {
       this.isrent,
       this.locationfrommap,
       this.desc,
-      this.size});
+      this.size,this.uid});
 
   //adding values to class
   Place.fromJson(DocumentSnapshot json) {
@@ -33,6 +35,8 @@ class Place {
     size = json["size"];
     locationfrommap = json["locationfrommap"];
     isrent = json["isrent"];
+        uid=json["uid"];
+
 
     id = json.id;
   }
@@ -48,7 +52,9 @@ class Place {
       "locationfrommap": locationfrommap,
       "size": size,
       "desc": desc,
-      "isrent": isrent
+      "isrent": isrent,
+            "uid":uid
+
     };
   }
 }

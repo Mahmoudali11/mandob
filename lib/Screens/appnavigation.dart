@@ -103,7 +103,7 @@ class _AppNaigationState extends State<AppNaigation> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<UserProvider>(context);
+    Provider.of<UserProvider>(context,listen: false).getUserData(FirebaseAuth.instance.currentUser.uid);
     print("called");
     return Scaffold(
         body: Center(

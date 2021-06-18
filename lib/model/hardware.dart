@@ -10,6 +10,7 @@ class Hardware {
   String category;
   String itemname;
   int iprice;
+  String uid;
 
   Hardware(
       {this.pic,
@@ -17,7 +18,7 @@ class Hardware {
       this.category,
       this.desc,
       this.itemname,
-      this.iprice});
+      this.iprice,this.uid});
   Hardware.fromJson(DocumentSnapshot json) {
     price = json["price"];
     pic = json["pic"];
@@ -26,6 +27,8 @@ class Hardware {
     id = json.id;
     iprice = json["iprice"];
     category=json["categorty"];
+        uid=json["uid"];
+
   }
   Map<String, dynamic> toJson() {
     return {
@@ -34,7 +37,9 @@ class Hardware {
       "itemname": itemname,
       "categorty": category,
       "desc": desc,
-      "iprice": iprice
+      "iprice": iprice,
+            "uid":uid
+
     };
   }
 }

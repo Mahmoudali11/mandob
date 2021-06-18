@@ -44,8 +44,8 @@ Future addProduct(Product p)async{
  
 
 }
-Stream getItem(){
-return  firebaseFirestore.collection("product").snapshots();
+Stream getItem(String uid){
+return  firebaseFirestore.collection("product").where("uid",isEqualTo:uid ).snapshots();
 
 }
 

@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mandob/Screens/workinghanditem.dart';
@@ -302,7 +303,7 @@ product.product=null;
                 custmoButton(!isedit?"Confirm":"edit", () async {
 
                   final lstimg=[img1,img2,img3,img4,img5];
-                  final p= Product(name: name.text,dtime:int.parse( deliverytime.text),whprice: double.parse(wholesomeprice.text),pic: lstimg,desc: describtion.text,price: int.parse(price.text));
+                  final p= Product(uid:FirebaseAuth.instance.currentUser.uid,name: name.text,dtime:int.parse( deliverytime.text),whprice: double.parse(wholesomeprice.text),pic: lstimg,desc: describtion.text,price: int.parse(price.text));
                  if(!isedit)
                   Provider.of<ProductProvider>(context,listen: false).addProduct(p);
                   else{

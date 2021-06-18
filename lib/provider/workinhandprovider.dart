@@ -47,8 +47,8 @@ Future addHandWork(WorkingHand p)async{
  
 
 }
-Stream getItem(){
-return  firebaseFirestore.collection("workinghand").snapshots();
+Stream getItem(String uid){
+return  firebaseFirestore.collection("workinghand").where("uid",isEqualTo:uid ).snapshots();
 
 }
 

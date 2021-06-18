@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mandob/Screens/workinghanditem.dart';
@@ -171,6 +172,7 @@ final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.j
   if(!isedit)
                   await Provider.of<WorkingHandProvider>(context, listen: false)
                       .addHandWork(WorkingHand(
+                        uid:FirebaseAuth.instance.currentUser.uid,
                           pic: img1,
                           cv: img2,
                           work: category.text,

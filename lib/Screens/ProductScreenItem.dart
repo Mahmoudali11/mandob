@@ -63,7 +63,7 @@ class ProductScreenItme extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.7,
               child: StreamBuilder<QuerySnapshot>(
-                stream: workh.getItem(),
+                stream: workh.getItem(FirebaseAuth.instance.currentUser.uid),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Text(

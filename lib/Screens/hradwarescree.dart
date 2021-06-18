@@ -1,4 +1,5 @@
  
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mandob/model/finish.dart';
@@ -328,7 +329,7 @@ var nn;
                       custmoButton(!isedit?"confirm":"edit", () async {
                         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+itemname.text);
                          final lstimg = [img1, img2, img3, img4, img5];
-                         final fh=Hardware(desc: describtion.text,pic: lstimg,category: category.text,price: int.parse(price.text),iprice: int.parse(iprice.text),itemname: itemname.text);
+                         final fh=Hardware(uid:FirebaseAuth.instance.currentUser.uid,desc: describtion.text,pic: lstimg,category: category.text,price: int.parse(price.text),iprice: int.parse(iprice.text),itemname: itemname.text);
                     if(!isedit)
                      await Provider.of<HardwareProvider>(context,listen: false).addHardware(fh);
                      else

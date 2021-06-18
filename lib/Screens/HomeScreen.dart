@@ -178,7 +178,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: placesfitcher.getItem(),
+                                stream: placesfitcher.getItem(FirebaseAuth.instance.currentUser.uid),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");
@@ -249,7 +249,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: finishingfitcher.getItem(),
+                                stream: finishingfitcher.getItem(FirebaseAuth.instance.currentUser.uid),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");
@@ -322,7 +322,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: hardwarefitcher.getItem(),
+                                stream: hardwarefitcher.getItem(FirebaseAuth.instance.currentUser.uid),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");
@@ -395,7 +395,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: productsfitcher.getItem(),
+                                stream: productsfitcher.getItem(FirebaseAuth.instance.currentUser.uid),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");

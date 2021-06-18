@@ -1,4 +1,5 @@
  
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mandob/model/finish.dart';
@@ -338,7 +339,7 @@ _character = SingingCharacter.superlux;
 
                       custmoButton(!isedit?"Confirm":"edit", () async {
                          final lstimg = [img1, img2, img3, img4, img5];
-                         final fh=Finishing(desc: describtion.text,pic: lstimg,category: category.text,worktype: _character.toString().split(".")[1],price: int.parse(price.text));
+                         final fh=Finishing(uid: FirebaseAuth.instance.currentUser.uid,desc: describtion.text,pic: lstimg,category: category.text,worktype: _character.toString().split(".")[1],price: int.parse(price.text));
                     if(!isedit)
                      await Provider.of<FinishingProvider>(context,listen: false).addFinishing(fh);
                      else

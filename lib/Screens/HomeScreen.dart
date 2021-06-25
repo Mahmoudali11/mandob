@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mandob/Screens/finishingscreendetails.dart';
+import 'package:mandob/Screens/hardwarescreendetails.dart';
+import 'package:mandob/Screens/productscreen.dart';
+import 'package:mandob/Screens/productscreendetails.dart';
 import 'package:mandob/model/finish.dart';
 import 'package:mandob/model/hardware.dart';
 import 'package:mandob/model/place.dart';
@@ -13,6 +17,7 @@ import 'LoginPage.dart';
 import '../provider/finishingprovider.dart';
 import '../provider/hardwareprovider.dart';
 import '../provider/productprovider.dart';
+import '../Screens/placescreendetails.dart';
 
 final imgurl =
     "https://image.freepik.com/free-photo/paperboard-texture_95678-72.jpg";
@@ -178,7 +183,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: placesfitcher.getItem(FirebaseAuth.instance.currentUser.uid),
+                                stream: placesfitcher.getUserItem(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");
@@ -214,7 +219,17 @@ class _UserHomePageState extends State<UserHomePage> {
                                                 Place.fromJson(e);
                                             return promoCard(
                                                 getAv(placesextracted.pic),
-                                                placesextracted.location);
+                                                placesextracted.location,
+                                                () async {
+                                              await placesfitcher
+                                                  .gotToEdit(placesextracted);
+
+                                              final route = MaterialPageRoute(
+                                                  builder: (context) {
+                                                return PlaceScreendetails();
+                                              });
+                                              Navigator.push(context, route);
+                                            });
                                           }).toList()),
                                     );
                                   }
@@ -249,7 +264,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: finishingfitcher.getItem(FirebaseAuth.instance.currentUser.uid),
+                                stream: finishingfitcher.getUserItem(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");
@@ -285,7 +300,20 @@ class _UserHomePageState extends State<UserHomePage> {
                                                 Finishing.fromJson(s);
                                             return promoCard(
                                                 getAv(finishingextracted.pic),
-                                                finishingextracted.worktype);
+                                                finishingextracted.worktype,
+                                                () async {
+                                              await finishingfitcher.gotToEdit(
+                                                  finishingextracted);
+
+                                              final viewroute =
+                                                  MaterialPageRoute(
+                                                      builder: (context) {
+                                                print("Finishing data loaded");
+                                                return FinishingScreendetails();
+                                              });
+                                              Navigator.push(
+                                                  context, viewroute);
+                                            });
                                           }).toList()),
                                     );
                                   }
@@ -322,7 +350,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: hardwarefitcher.getItem(FirebaseAuth.instance.currentUser.uid),
+                                stream: hardwarefitcher.getUserItem(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");
@@ -358,7 +386,17 @@ class _UserHomePageState extends State<UserHomePage> {
                                                 Hardware.fromJson(s);
                                             return promoCard(
                                                 getAv(hardwareextracted.pic),
-                                                hardwareextracted.itemname);
+                                                hardwareextracted.itemname,
+                                                () async {
+                                              await hardwarefitcher
+                                                  .gotToEdit(hardwareextracted);
+
+                                              final route = MaterialPageRoute(
+                                                  builder: (context) {
+                                                return HardwareScreendetails();
+                                              });
+                                              Navigator.push(context, route);
+                                            });
                                           }).toList()),
                                     );
                                   }
@@ -395,7 +433,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
                           Container(
                             child: StreamBuilder<QuerySnapshot>(
-                                stream: productsfitcher.getItem(FirebaseAuth.instance.currentUser.uid),
+                                stream: productsfitcher.getUserItem(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     print("Error Getting Places");
@@ -431,7 +469,17 @@ class _UserHomePageState extends State<UserHomePage> {
                                                 Product.fromJson(s);
                                             return promoCard(
                                                 getAv(productsextracted.pic),
-                                                productsextracted.name);
+                                                productsextracted.name,
+                                                () async {
+                                              await productsfitcher
+                                                  .gotToEdit(productsextracted);
+
+                                              final route = MaterialPageRoute(
+                                                  builder: (context) {
+                                                return ProductScreendetails();
+                                              });
+                                              Navigator.push(context, route);
+                                            });
                                           }).toList()),
                                     );
                                   }
@@ -445,7 +493,7 @@ class _UserHomePageState extends State<UserHomePage> {
   }
 
 //Start of PromoCard
-  Widget promoCard(image, String displayinfo) {
+  Widget promoCard(image, String displayinfo, Function function) {
     return AspectRatio(
       aspectRatio: 2.62 / 3,
       child: Stack(children: [
@@ -478,7 +526,8 @@ class _UserHomePageState extends State<UserHomePage> {
               ),
               backgroundColor: Colors.blue[100],
               onPressed: () {
-                print("i was pressed");
+                function();
+                print("THE VIEW BUTTON Here And Function Done");
               }),
         ),
         Positioned(

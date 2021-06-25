@@ -32,6 +32,13 @@ class PlacesProvider extends ChangeNotifier {
   }
 
   Stream getItem(String uid) {
-    return firebaseFirestore.collection("place").where("uid",isEqualTo:uid ).snapshots();
+    return firebaseFirestore
+        .collection("place")
+        .where("uid", isEqualTo: uid)
+        .snapshots();
+  }
+
+  Stream getUserItem() {
+    return firebaseFirestore.collection("place").snapshots();
   }
 }

@@ -43,6 +43,8 @@ final imgurl="https://image.freepik.com/free-photo/paperboard-texture_95678-72.j
 
   @override
   Widget build(BuildContext context) {
+        category.text=cat[0];
+
       final workh=Provider.of<WorkingHandProvider>(context,listen: false);
       print(workh.workingHand??"null now");
       if(i==0&&workh.workingHand!=null){

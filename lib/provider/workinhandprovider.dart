@@ -8,53 +8,48 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import 'package:provider/provider.dart';
+
 class WorkingHandProvider extends ChangeNotifier {
-WorkingHand workingHand;
+  WorkingHand workingHand;
 
-File img;
-String imgname;
- 
+  File img;
+  String imgname;
 
-FirebaseFirestore firebaseFirestore=FirebaseFirestore.instance;
-Future deleteResumee(String w)async{
- await firebaseFirestore.collection("workinghand").doc(w).delete();
- print("deleted");
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  Future deleteResumee(String w) async {
+    await firebaseFirestore.collection("workinghand").doc(w).delete();
+    print("deleted");
+  }
 
+  Future gotToEdit(
+    WorkingHand w,
+  ) {
+    workingHand = w;
+    notifyListeners();
+  }
 
+  Future editResumee(String id, WorkingHand w) async {
+    await firebaseFirestore
+        .collection("workinghand")
+        .doc(id)
+        .update(w.toJson());
+  }
 
-}
-Future gotToEdit(WorkingHand w,){
+  Future addHandWork(WorkingHand p) async {
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
-  workingHand=w;
-  notifyListeners();
-}
+    await firebaseFirestore.collection("workinghand").add(p.toJson());
+    notifyListeners();
+  }
 
+  Stream getItem(String uid) {
+    return firebaseFirestore
+        .collection("workinghand")
+        .where("uid", isEqualTo: uid)
+        .snapshots();
+  }
 
-
-Future editResumee(String id,WorkingHand w) async{
-
-  await firebaseFirestore.collection("workinghand").doc(id).update(w.toJson());
-  
-
-}
-
-Future addHandWork(WorkingHand p)async{
-
-    FirebaseStorage firebaseStorage=FirebaseStorage.instance;
-  
-   await  firebaseFirestore.collection("workinghand").add(p.toJson());
-   notifyListeners();
- 
-
-}
-Stream getItem(String uid){
-return  firebaseFirestore.collection("workinghand").where("uid",isEqualTo:uid ).snapshots();
-
-}
-
-
-
-
-
-
+  Stream getUserItem() {
+    return firebaseFirestore.collection("workinghand").snapshots();
+  }
 }

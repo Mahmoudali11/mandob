@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:mandob/Screens/EditProfile.dart';
 import 'package:mandob/provider/HomeScreenProvider.dart';
+import 'package:mandob/provider/cartprovider.dart';
 import 'package:mandob/provider/finishingprovider.dart';
 import 'package:mandob/provider/hardwareprovider.dart';
 import 'package:mandob/provider/productprovider.dart';
@@ -19,7 +20,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
- // FirebaseAuth.instance.signOut();
   // dynamic token = FlutterSession().get("token");
 
   runApp(MultiProvider(
@@ -32,6 +32,10 @@ void main() async {
         ChangeNotifierProvider(create: (context) => FinishingProvider()),
         ChangeNotifierProvider(create: (context) => HardwareProvider()),
         ChangeNotifierProvider(create: (context) => HomeScreenProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+ 
+
+        
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

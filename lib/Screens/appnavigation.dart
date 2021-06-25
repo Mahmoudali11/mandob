@@ -9,6 +9,7 @@ import 'package:mandob/Screens/hardwarescreenitem.dart';
 import 'package:mandob/Screens/hradwarescree.dart';
 import 'package:mandob/Screens/placescreenitem.dart';
 import 'package:mandob/Screens/productscreen.dart';
+import 'package:mandob/Screens/usercart.dart';
 import 'package:mandob/Screens/workinghand.dart';
 import 'package:mandob/Screens/workinghanditem.dart';
 import 'package:mandob/model/user.dart';
@@ -16,6 +17,7 @@ import 'package:mandob/model/workinghand.dart';
 import 'package:mandob/provider/userprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:mandob/Screens/placescreen.dart';
+import 'MandobNavigation.dart';
 
 import 'HomeScreen.dart';
 
@@ -26,8 +28,9 @@ class AppNaigation extends StatefulWidget {
 }
 
 class _AppNaigationState extends State<AppNaigation> {
-  int _userHomeNavigate = 0;
+  int _userHomeNavigate=2 ;
   int _selectedIndex = 1;
+   Users users;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _list = <Widget>[
@@ -38,6 +41,12 @@ class _AppNaigationState extends State<AppNaigation> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+
+    });
+  }
+   void _onItemTappedUser(int index) {
+    setState(() {
+_userHomeNavigate=index;      
     });
   }
 
@@ -45,7 +54,7 @@ class _AppNaigationState extends State<AppNaigation> {
   void initState() {
     Future.delayed(Duration(seconds: 1), () async {
       FirebaseAuth auth = FirebaseAuth.instance;
-      Users users = await Provider.of<UserProvider>(context, listen: false)
+     users = await Provider.of<UserProvider>(context, listen: false)
           .getUserData(auth.currentUser.uid);
       List listItem = [
         "Broker", //0
@@ -87,29 +96,37 @@ class _AppNaigationState extends State<AppNaigation> {
           FinishingSceen()
         ];
       } else if (users.jobtype == listItem[5]) {
-        _userHomeNavigate = 1;
+        _userHomeNavigate = 2;
         _list = [
           Center(child: Text("Notifications")),
+          UserCart(),
           UserHomePage(),
-          UserHomePage(),
-          UserHomePage(),
-          UserHomePage(),
+          MandobNavigation(),
+
           UserHomePage(),
         ];
       }
+         setState(() {
+      users=users;
+      _list=_list;
     });
+    });
+
+ 
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<UserProvider>(context,listen: false).getUserData(FirebaseAuth.instance.currentUser.uid);
+    // Provider.of<UserProvider>(context, listen: false)
+    //     .getUserData(FirebaseAuth.instance.currentUser.uid);
     print("called");
     return Scaffold(
-        body: Center(
-            child: _list.elementAt(_selectedIndex),
-          ),
-        bottomNavigationBar: _userHomeNavigate != 1
+        body: users==null?Center(child: CircularProgressIndicator()): Center(
+          child: _list.elementAt(_list.length==5?_userHomeNavigate:_selectedIndex),
+        ),
+        bottomNavigationBar: _list.length==3
             ? ConvexAppBar(
                 items: [
                     TabItem(icon: Icons.notifications, title: 'Notification'),
@@ -121,16 +138,17 @@ class _AppNaigationState extends State<AppNaigation> {
                   _onItemTapped(i);
                 })
             : ConvexAppBar(
-                items: [
-                    TabItem(icon: Icons.notifications, title: 'Notification'),
-                    TabItem(icon: Icons.shopping_cart, title: 'Cart'),
-                    TabItem(icon: Icons.home, title: 'Home'),
-                    TabItem(icon: Icons.school, title: 'Mandob'),
-                    TabItem(icon: Icons.pie_chart, title: 'Statistics'),
-                  ],
-                initialActiveIndex: 2, //optional, default as 0
-                onTap: (int i) {
-                  _onItemTapped(i);
-                }));
+              curveSize:0 ,
+                  items: [
+                      TabItem(icon: Icons.notifications, title: 'Noti'),
+                      TabItem(icon: Icons.shopping_cart, title: 'Cart'),
+                      TabItem(icon: Icons.home, title: 'Home'),
+                      TabItem(icon: Icons.school, title: 'Mandob'),
+                      TabItem(icon: Icons.pie_chart, title: 'Statistics'),
+                    ],
+                  initialActiveIndex: 2, //optional, default as 0
+                  onTap: (int i) {
+                    _onItemTappedUser(i);
+                  }));
   }
 }

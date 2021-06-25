@@ -7,51 +7,42 @@ import 'package:mandob/model/workinghand.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-class ProductProvider extends ChangeNotifier{
-Product product;
-File img;
-String imgname;
 
+class ProductProvider extends ChangeNotifier {
+  Product product;
+  File img;
+  String imgname;
 
-FirebaseFirestore firebaseFirestore=FirebaseFirestore.instance;
-Future deleteProduct(String w)async{
- await firebaseFirestore.collection("product").doc(w).delete();
- print("deleted");
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  Future deleteProduct(String w) async {
+    await firebaseFirestore.collection("product").doc(w).delete();
+    print("deleted");
+  }
 
+  Future gotToEdit(
+    Product w,
+  ) {
+    product = w;
+    notifyListeners();
+  }
 
+  Future editProduct(String id, Product w) async {
+    await firebaseFirestore.collection("product").doc(id).update(w.toJson());
+  }
 
-}
-Future gotToEdit(Product w,){
+  Future addProduct(Product p) async {
+    await firebaseFirestore.collection("product").add(p.toJson());
+    notifyListeners();
+  }
 
-  product=w;
-  notifyListeners();
-}
+  Stream getItem(String uid) {
+    return firebaseFirestore
+        .collection("product")
+        .where("uid", isEqualTo: uid)
+        .snapshots();
+  }
 
-
-
-Future editProduct(String id,Product w) async{
-
-  await firebaseFirestore.collection("product").doc(id).update(w.toJson());
-  
-
-}
-
-Future addProduct(Product p)async{
-
-   
-   await  firebaseFirestore.collection("product").add(p.toJson());
-   notifyListeners();
- 
-
-}
-Stream getItem(String uid){
-return  firebaseFirestore.collection("product").where("uid",isEqualTo:uid ).snapshots();
-
-}
-
-
-
-
-
-
+  Stream getUserItem() {
+    return firebaseFirestore.collection("product").snapshots();
+  }
 }

@@ -24,6 +24,7 @@ class Users {
     phone = json["phone"];
     username = json["username"];
     jobtype = json["jobtype"];
+    uid=json["uid"];
   }
   Map<String, dynamic> toJson() {
     return {

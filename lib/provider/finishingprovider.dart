@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mandob/model/finish.dart';
 
-
 class FinishingProvider extends ChangeNotifier {
   Finishing finishing;
-  
 
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   Future deleteFinishing(String w) async {
@@ -30,8 +28,13 @@ class FinishingProvider extends ChangeNotifier {
   }
 
   Stream getItem(String uid) {
+    return firebaseFirestore
+        .collection("Finishing")
+        .where("uid", isEqualTo: uid)
+        .snapshots();
+  }
 
-
-    return firebaseFirestore.collection("Finishing").where("uid",isEqualTo:uid ).snapshots();
+  Stream getUserItem() {
+    return firebaseFirestore.collection("Finishing").snapshots();
   }
 }
